@@ -9,11 +9,11 @@ using namespace std;
 
 namespace Data {
   //const int n = 5;
-  string neutron  = "./dat/neutron.root";
-  string electron = "./dat/electron.root";
-  string pion     = "./dat/pion.root";
-  string proton1  = "./dat/proton_huhtinen.root";
-  string proton2  = "./dat/proton_summers.root";
+  string neutron  = "../dat/neutron.root";
+  string electron = "../dat/electron.root";
+  string pion     = "../dat/pion.root";
+  string proton1  = "../dat/proton_huhtinen.root";
+  string proton2  = "../dat/proton_summers.root";
 }
 
 DamageFactorBase::DamageFactorBase(const int pdg) {
@@ -83,8 +83,8 @@ double DamageFactorBase::Interpolation(int pdg, double energy) {
       if ( energy>=rNeutron[0] && energy<=rNeutron[1] )
 	    factor = spl[0]->Eval(energy);
 	  else {
-	    cout << "Warning: Neutron energy is out of range! Neutron energy: " << energy
-             << " Factor: 0.0 " << endl;
+        //cout << "Warning: Neutron energy is out of range! Neutron energy: " << energy
+        //     << " Factor: 0.0 " << endl;
         return 0.;
 	  }
 	  break;
@@ -103,8 +103,8 @@ double DamageFactorBase::Interpolation(int pdg, double energy) {
 	  if ( energy>=rPion[0] && energy<=rPion[1] )
 	    factor = spl[2]->Eval(energy);
 	  else {
-	    cout << "Warning: Pion energy is out of range! Poin energy: " << energy
-             << " Factor: 0.0 " << endl;
+	    //cout << "Warning: Pion energy is out of range! Poin energy: " << energy
+        //     << " Factor: 0.0 " << endl;
 	    return 0.;
 	  }
 	  break;
@@ -115,15 +115,21 @@ double DamageFactorBase::Interpolation(int pdg, double energy) {
 	  else if ( energy>=rProton2[0] && energy<rProton2[1] )
 	    factor = spl[4]->Eval(energy);
 	  else {
-	    cout << "Warning: Proton energy is out of range! Proton energy: " << energy
-             << " Factor: 0.0 " << endl;
+	    //cout << "Warning: Proton energy is out of range! Proton energy: " << energy
+        //     << " Factor: 0.0 " << endl;
 	    return 0.; 
 	  }
 	  break;
 	// else
 	default:
-      cout << "There is no data on this pdgcode: " << pdg << endl;
-      return 0;  break;
+      //cout << "There is no data on this pdgcode: " << pdg << endl;
+      return 0.;  break;
+  }
+  
+  if (factor<0) {
+    //cout << "error: factor is less than zero!" << endl;
+    //cout << "  pdgcode: " << pdg << " , energy: " << energy << " , factor: " << spl[0]->Eval(energy) << endl;
+    return 1.;
   }
 
   return factor;
