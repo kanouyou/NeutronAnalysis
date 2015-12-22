@@ -9,11 +9,12 @@ using namespace std;
 
 namespace Data {
   //const int n = 5;
-  string neutron  = "../dat/neutron.root";
-  string electron = "../dat/electron.root";
-  string pion     = "../dat/pion.root";
-  string proton1  = "../dat/proton_huhtinen.root";
-  string proton2  = "../dat/proton_summers.root";
+  string path     = "/Users/YeYang/Documents/COMET/WorkStation/DetRadiation/analysiscode";
+  string neutron  = path + "/dat/neutron.root";
+  string electron = path + "/dat/electron.root";
+  string pion     = path + "/dat/pion.root";
+  string proton1  = path + "/dat/proton_huhtinen.root";
+  string proton2  = path + "/dat/proton_summers.root";
 }
 
 DamageFactorBase::DamageFactorBase(const int pdg) {
@@ -89,7 +90,7 @@ double DamageFactorBase::Interpolation(int pdg, double energy) {
 	  }
 	  break;
     // electron:
-	/*case 11:
+	case 11:
 	  if ( energy>=rElectron[0] && energy<=rElectron[1] )
 	    factor = spl[1]->Eval(energy);
 	  else {
@@ -97,7 +98,7 @@ double DamageFactorBase::Interpolation(int pdg, double energy) {
              << "Factor: 0.0 " << endl;
 	    return 0.;
 	  }
-	  break;*/
+	  break;
     // pion-:
 	case -211:
 	  if ( energy>=rPion[0] && energy<=rPion[1] )

@@ -11,7 +11,7 @@ using std::endl;
 using std::map;
 
 IFluxAnalysis::IFluxAnalysis(string file)
-    : IAnalysisBase(file, "f"), fArea(1.), fFactor(new DamageFactorBase(11))
+    : IAnalysisBase(file, "f"), fArea(1.), fFactor(new IDamageFactor())
 {
   double bin[] = {1.1e-9, 1.6e-6, 3.4e-6, 7.3e-6, 1.6e-5, 3.4e-5, 7.3e-5, 1.5e-4, 3.0e-4,
                   6.0e-4, 1.1e-3, 2.0e-3, 3.4e-3, 5.3e-3, 8.5e-3, 1.2e-2, 1.4e-2, 1.5e-2,
@@ -30,6 +30,8 @@ IFluxAnalysis::IFluxAnalysis(string file)
   fBin = new double[fNbin];
   for (int i=0; i<fNbin; i++)
     fBin[i] = bin[i];
+  
+  fFactor->Load();
 }
 
 IFluxAnalysis::~IFluxAnalysis()
@@ -175,6 +177,25 @@ double* IFluxAnalysis::GetEqNeutron()
 }
 
 ///
+double IFluxAnalysis::GetParticleFlux(int pdg)
+{
+  int flux = 0;
+  
+  if ( buffPdgcode.size()==0 ) {
+    for (vector<int>::size_type i=0; i<fPdgCode.size(); i++) {
+      if (fPdgCode[i]==pdg) flux++;
+    }
+  }
+  else {
+    for (vector<int>::size_type i=0; i<buffPdgcode.size(); i++) {
+      if (buffPdgcode[i]==pdg) flux++;
+    }
+  }
+
+  return (double)flux * fIntensity / fEvent / fArea;
+}
+
+///
 void IFluxAnalysis::Print()
 {
   cout << " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " << endl;
@@ -185,4 +206,14 @@ void IFluxAnalysis::Print()
   cout << " 1 MeV equivalent neutron flux: " << GetEqNeutron()[0] << " [n/cm2/sec]" << endl;
   
   cout << "\n";
+}
+
+///
+void IFluxAnalysis::CheckSource(int pdg)
+{
+  cout << " ---------- PHITS source format ----------- " << endl;
+  TH1F* hist = GetFlux(pdg);
+  for (int i=0; i<fNbin-1; i++) {
+    cout << hist->GetBinCenter(i) - hist->GetBinWidth(i)/2 << "     " << hist->GetBinContent(i) << endl;
+  }
 }

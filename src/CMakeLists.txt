@@ -6,5 +6,6 @@ cmake_minimum_required(VERSION 2.8)
 #add_library(SimPHITSAnalysis  STATIC  ${SOURCES})
 add_library(SimPHITSAnalysis  STATIC  IAnalysisBase.cpp
                                       IFluxAnalysis.cpp
+                                      IDamageFactor.cpp
                                       DamageFactorBase.cpp)
 

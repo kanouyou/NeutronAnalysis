@@ -8,7 +8,8 @@
 #include <map>
 #include <TH1F.h>
 #include <TVector3.h>
-#include "DamageFactorBase.h"
+#include "IDamageFactor.h"
+//#include "DamageFactorBase.h"
 #include "IAnalysisBase.h"
 
 typedef std::map<std::string, int> AnalysisMap;
@@ -32,11 +33,17 @@ class IFluxAnalysis : public IAnalysisBase {
     // get flux histogram of this particle
     TH1F* GetFlux(int);
 
+    // return flux of this particle
+    double GetParticleFlux(int pdg);
+
 	// plot the flux with each particle
     void  Plot();
 
     // print neutron fluence
     void  Print();
+
+    // print phits source format of this particle
+    void  CheckSource(int pdg);
 
   protected:
     // convert to 1 MeV equivalent neutron
@@ -46,7 +53,8 @@ class IFluxAnalysis : public IAnalysisBase {
     double* fBin;
     int     fNbin;
     double  fArea;
-    DamageFactorBase*      fFactor;
+//    DamageFactorBase*      fFactor;
+    IDamageFactor*         fFactor;
     std::vector<TVector3*> buffPos;
     std::vector<double>    buffEnergy;
     std::vector<int>       buffPdgcode;

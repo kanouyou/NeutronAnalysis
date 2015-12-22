@@ -12,7 +12,7 @@ set(CXX clang++)
 #add_compile_options(-stdlib=libstdc++)
 
 # set flags
-set(CMAKE_CXX_RELEASE "-O3")
+set(CMAKE_CXX_RELEASE "-O3 -I/opt/local/include/gsl")
 set(CMAKE_CXX_DEBUG   "-Wall")
 
 # ROOT lib
@@ -31,5 +31,6 @@ add_subdirectory(src)
 add_executable(${TARGET} ${MAINSRC})
 
 # link lib
-target_link_libraries(${TARGET}  SimPHITSAnalysis  ${ROOTLIBS})
+link_directories(/opt/local/lib)
+target_link_libraries(${TARGET}  SimPHITSAnalysis  ${ROOTLIBS} gsl)
 

@@ -56,7 +56,7 @@ void IAnalysisBase::LoadFluxFile(string xfile)
   tree->SetBranchAddress("EvtPDG", &pdgcode);
   tree->SetBranchAddress( "EvtV4", pos);
   tree->SetBranchAddress( "EvtP4", p4);
-  
+
   // fill data into vector
   for (int i=0; i<tree->GetEntries(); i++) {
     tree->GetEntry(i);
